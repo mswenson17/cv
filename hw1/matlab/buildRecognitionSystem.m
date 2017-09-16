@@ -5,7 +5,6 @@ function buildRecognitionSystem()
 	load('../data/traintest.mat');
 
 	% TODO create train_features
-    [filterBank] = createFilterBank()
 
 
 	save('vision.mat', 'filterBank', 'dictionary', 'train_features', 'train_labels');

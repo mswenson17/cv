@@ -31,7 +31,6 @@ s = M * N;
 T = 0.008856;
 
 RGB = [reshape(R,1,s); reshape(G,1,s); reshape(B,1,s)];
-
 % RGB to XYZ
 MAT = [0.412453 0.357580 0.180423;
        0.212671 0.715160 0.072169;

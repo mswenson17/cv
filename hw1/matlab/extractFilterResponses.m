@@ -7,6 +7,13 @@ function [filterResponses] = extractFilterResponses(img, filterBank)
 %   filterResponses:    a W x H x N*3 matrix of filter responses
 
 
-% TODO Implement your code here
-
+img=double(img);
+filterResponses=[]; 
+[L,a,b] = RGB2Lab(img(:,:,1),img(:,:,2),img(:,:,3));
+labimg = cat(3, L,a,b);
+for i = 1:20
+    filterResponses = cat(3,filterResponses, lab2rgb(imfilter(labimg, filterBank{ i })));
+end
+%imshow(filterResponses(:,:,7:9));
+%montage(filterResponses,  'Size', [4 5]);
 end
