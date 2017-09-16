@@ -7,6 +7,19 @@ function [wordMap] = getVisualWords(img, filterBank, dictionary)
 % Output:
 %   wordMap: WordMap matrix of same size as the input image (h, w)
 
-    % TODO Implement your code here
+   imgResp=extractFilterResponses(img, filterBank); 
+   [x y z]= size(imgResp); 
+   wordMap=[];
+   size(dictionary)
+   for i=1:y
+       row = squeeze(imgResp(:,i,:));
+       wordComp=pdist2(dictionary', row);
+       [a wordInd] = min(wordComp);
+       wordMap = cat(1,wordMap, wordInd);
+   end
 
+   wordMap=wordMap';
+   %knnsearch(dictionary',pixel', 'Distance', 'euclidean')
+   size(wordMap)
+   %imagesc(wordMap)
 end
