@@ -20,6 +20,6 @@ function guessedImage = guessImage( imagename )
 
 	figure(1);
 	imshow(image);
-	title('image to classify')
+	title(imagename)
 
 end
