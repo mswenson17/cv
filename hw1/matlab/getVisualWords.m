@@ -10,14 +10,8 @@ function [wordMap] = getVisualWords(img, filterBank, dictionary)
    imgResp=extractFilterResponses(img, filterBank); 
    [x y z]= size(imgResp); 
    wordMap=[];
-   for i=1:y
-       row = squeeze(imgResp(:,i,:));
-       wordComp=pdist2(dictionary', row);
-       [a wordInd] = min(wordComp);
-       wordMap = cat(1,wordMap, wordInd);
-   end
-
-   wordMap=wordMap';
-   %knnsearch(dictionary',pixel', 'Distance', 'euclidean')
-   %imagesc(wordMap)
+   imgResp = squeeze(reshape(imgResp, [], 1,60));
+   wordComp=pdist2(dictionary', imgResp);
+   [a wordInd] = min(wordComp);
+   wordMap = reshape(wordInd, x,y);
 end

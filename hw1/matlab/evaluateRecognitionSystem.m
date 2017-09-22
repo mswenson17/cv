@@ -19,8 +19,7 @@ function [conf] = evaluateRecognitionSystem()
         h = getImageFeaturesSPM(3, wordMaps{ i }, size(dictionary,2));
         distances = distanceToSet(h, train_features);
         [~,nnI] = max(distances);
-        guessedImage = train_labels(nnI)
-        test_labels(i)
+        guessedImage = train_labels(nnI);
         conf(guessedImage,test_labels(i)) = conf(guessedImage,test_labels(i)) +1;
     end
 

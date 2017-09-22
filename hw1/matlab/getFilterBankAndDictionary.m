@@ -8,8 +8,8 @@ function [filterBank, dictionary] = getFilterBankAndDictionary(imPaths)
 %   dictionary: a dictionary of visual words from the filter responses using k-means.
 
 filterBank  = createFilterBank();
-alpha =200;
-K = 200;
+alpha =300
+K = 100
 %imPaths= strcat('../data/', imPaths);
 filterResponses = [];
 for i = 1:length(imPaths)
