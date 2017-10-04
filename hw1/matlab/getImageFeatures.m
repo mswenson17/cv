@@ -10,7 +10,7 @@ function [h] = getImageFeatures(wordMap, dictionarySize)
     h=zeros(dictionarySize, 1); 
     numValues = numel(t(:,1));
     h(1:numValues) = t(:,2);
-    h=h/sum(h);
+    %h=h/sum(h);
 
 	assert(numel(h) == dictionarySize);
 end
