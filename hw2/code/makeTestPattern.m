@@ -37,7 +37,7 @@ compareX = compareA;
 compareY = compareB;
 
 
-save testPattern.mat compareA compareB compareX compareY
+save testPattern.mat compareA compareB compareX compareY;
 
 figure 
 hold off

@@ -9,73 +9,64 @@ function [panoImg] = imageStitching(img1, img2, H2to1)
 % Blends img1 and warped img2 and outputs the panorama image
 
 close all
-save('../results/c6_1.mat', 'H2to1');
 im1size = size(img1);
-im2size = size(img2)
-
-%wimsize = [2*im1size(1) im2size(2)+im2size(2), 3];
-%wim = warpH(img2, H2to1, wimsize);
-wim = warpH(img2, H2to1, im2size);
-
-%sizediff = wimsize- size(img1);
-imcomb = img1;
-%imcomb(end:end+sizediff(1), end:end+sizediff(2),:)=0;
-imcomb(end:end+im2size(1)/4, end:end+im2size(2)/4,:)=0;
-size(img2)
-size(wim)
-size(imcomb)
-%figure(1)
-%imshow(imcomb)
-
-%[locs1 desc1] = briefLite(img1);
-%[locs2 desc2] = briefLite(wim);
-%[matches] = briefMatch(desc1, desc2);
-%save('stuff.mat', 'locs1', 'locs2', 'matches', 'desc1', 'desc2');
-
-load stuff.mat
+im2size = size(img2);
+%         top right        top left      botom right            bottom left
+corners =[im2size(2), 1,1 ; 1, 1,1 ;im2size(2), im2size(1),1 ;1, im2size(1),1 ]';
 warning('off','images:initSize:adjustingMag');
+
+transcorners = H2to1*corners;
+transcorners = transcorners(1:2,:)./transcorners(3,:)
+
+%naspect =sqrt(sum(transcorners(1:2,2)-transcorners(1:2,3)).^2)
+xsize = round(max(transcorners(1,:))-min(transcorners(1,:)));
+ysize = round(max(transcorners(2,:))-min(transcorners(2,:)));
+
+xoffset = min(transcorners(1,:));
+yoffset = min(transcorners(2,:));
+
+m = eye(3);
+m(1,3) = -xoffset;
+m(2,3) = -yoffset;
+
+wimsize = [ysize,xsize, 3];
+
+wim = warpH(img2, m*H2to1,wimsize);
+
+[locs1 desc1] = briefLite(img1);
+[locs2 desc2] = briefLite(wim);
+[matches] = briefMatch(desc1, desc2);
+%save('stuff.mat', 'locs1', 'locs2', 'matches', 'desc1', 'desc2');
+%load stuff.mat
 
 p1 = locs1(matches(:,1),:);
 p2 = locs2(matches(:,2),:); 
-m=matches(1:10,:)
 diff = p1(:,1:2)-p2(:,1:2);
 
-size(diff)
 for i = 1:size(diff,1)
     shift = diff(i,:);
     diffTemp =diff-shift;
     distance = realsqrt(sum(diffTemp.^2,2));
     avg_distance = mean(distance);
     if i==1
-        offset=shift
-        bestdistance=avg_distance
-    elseif avg_distance < bestdistance
-        offset=shift
-        bestdistance=avg_distance
+        offset=shift;
+        bestdistance=avg_distance;
+    elseif avg_distance < bestdistance;
+        offset=shift;
+        bestdistance=avg_distance;
     end
 
 end
+offset
 
-%p110=p1(1:10,:)'
-%p210=p2(1:10,:)'
-%d10=diff(1:10,:)'
+imcombsize=[max((im1size(1)+abs(offset(2))),wimsize(1)), max(wimsize(2),(im1size(2)+abs(offset(1)))),3];
+imcomb= zeros(imcombsize);
+buffer=zeros(wimsize(1), abs(offset(1)),3);
+wim = cat(2,buffer , wim);
 
-%offset = round(mean(diff,1))
-%offset = diff(1,:);
-offset(1)=offset(1)+1;
-wim = circshift(wim, offset(2), 1);
-wim = circshift(wim, offset(1), 2);
-figure(2)
-imshow(wim);
+buffer = zeros(abs(offset(2)),im1size(2),3);
+im1 =  cat(1,buffer, img1); 
 
-%imdiff = wim- imcomb;
-addim=uint8(imcomb==0);
-%figure(4)
-%imshow(imdiff)
-wim= wim.*addim;
-imcomb = imcomb+wim;
-
-figure(3)
-imshow(imcomb)
-
-%plotMatches(img1,wim, matches, locs1, locs2); 
+wim(1:size(im1,1), 1:size(im1,2),:)=max(im1,wim(1:size(im1,1), 1:size(im1,2),:));
+panoImg = wim;
+%imshow(wim)
