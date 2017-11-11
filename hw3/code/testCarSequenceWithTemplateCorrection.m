@@ -2,7 +2,6 @@ close all;
 clear all;
 
 load ../data/carseq.mat
-
 rect = [60 117 146 152];
 montages(:,:,1,1) = frames(:,:,1);
 
@@ -33,7 +32,7 @@ for i = 2:size(frames,3)
     rect(2)=rect(2)+dp_y;
     rect(4)=rect(4)+dp_y;
 
-    carrects(i,:) = rect;
+    wrcts(i,:) = rect;
 
 
     if mod(i,100)==0
@@ -44,7 +43,7 @@ for i = 2:size(frames,3)
     end
 end
 
-save('carseqrects-wrct.mat','wrctects');
+save('carseqrects-wcrt.mat','wrcts');
 montage(montages, 'Size',[1 NaN])
 hold on
 y=0;

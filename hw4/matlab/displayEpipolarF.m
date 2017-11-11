@@ -43,6 +43,8 @@ while 1
 
   legend('show');
   [x y button] = ginput(1);
+  p=[x y]
+
   if(gca~=h_axes1)
       subplot 121
       title('Please click only in this image')
