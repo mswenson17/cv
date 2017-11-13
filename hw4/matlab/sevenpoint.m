@@ -11,5 +11,44 @@ function [ F ] = sevenpoint( pts1, pts2, M )
 
 %     Write recovered F and display the output of displayEpipolarF in your writeup
 
+T = [1/M 0      0;...
+     0      1/M 0;...
+     0      0      1];
+
+Tpts1 = pts1/M;
+Tpts2 = pts2/M;
+
+u=  Tpts1(:,1);
+v=  Tpts1(:,2);
+up= Tpts2(:,1);
+vp= Tpts2(:,2);
+
+UV = [u.*up u.*vp u v.*up v.*vp v up vp];
+UV(:,9) = 1;
+
+[U, S, V] = svd(UV);
+F1 = V(:,end-1);
+F2 = V(:,end);
+
+F1 = reshape(F1, [3 3]);
+F2 = reshape(F2, [3 3]);
+F1 = F1'; 
+F2 = F2'; 
+syms lambda
+
+F = F2*(1-lambda)+lambda*F1;
+eq = det(F)==0;
+
+l=vpasolve(eq,lambda,[-Inf,Inf]);
+
+F = F2*(1-l)+l*F1;
+
+F = round(double(F),6);
+
+F = refineF(F, Tpts1,Tpts2); 
+
+F =  T'*F*T;
+
+save('q2_2.mat', 'F', 'M', 'pts1', 'pts2');
 end
 

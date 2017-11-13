@@ -40,8 +40,12 @@ W(3,3)=0;
 
 F=U*W*V';
 
-F = refineF(F, Tpts1,Tpts2);
+F = refineF(F, Tpts1,Tpts2); 
 
 F =  T'*F*T;
+pts1 = pts1*M;
+pts2 = pts2*M;
+
+save('q2_1.mat', 'F', 'M', 'pts1', 'pts2');
 end
 

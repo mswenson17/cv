@@ -9,7 +9,7 @@ function [ E ] = essentialMatrix( F, K1, K2 )
 %
 %       Write the computed essential matrix in your writeup
 
-E = inv(K1)' * F * inv(K2);
+E = K2' * F * K1;
 
 end
 
