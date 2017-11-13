@@ -42,6 +42,6 @@ p2p = p2p(1:2,:)./p2p(3,:);
 err1 = sum(sum((p1-p1p').^2,2));
 err2 = sum(sum((p2-p2p').^2,2));
 %all P(:,3)>0
-err = err1+err2
+err = err1+err2;
 
 end
