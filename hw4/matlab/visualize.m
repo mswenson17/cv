@@ -51,4 +51,4 @@ vals = (P(:,3)-min_val)/range_val;
 c = [vals 0*vals 1-vals];
 scatter3(P(:,1),P(:,2),P(:,3),20,c,'filled')
 
-save("q4_2.mat","M1","M2","C1","C2");
+%save("q4_2.mat","M1","M2","C1","C2");

@@ -32,8 +32,8 @@ F2 = V(:,end);
 
 F1 = reshape(F1, [3 3]);
 F2 = reshape(F2, [3 3]);
-F1 = F1'; 
-F2 = F2'; 
+F1 = F1';
+F2 = F2';
 syms lambda
 
 F = F2*(1-lambda)+lambda*F1;
@@ -41,14 +41,16 @@ eq = det(F)==0;
 
 l=vpasolve(eq,lambda,[-Inf,Inf]);
 
-F = F2*(1-l)+l*F1;
+F={};
+for i=1:numel(l)
+Fi = F2*(1-l(i))+l(i)*F1;
+Fi = round(double(Fi),6);
+Fi = refineF(Fi, Tpts1,Tpts2); 
+Fi =  T'*Fi*T;
+F{i} = Fi;
+end
 
-F = round(double(F),6);
 
-F = refineF(F, Tpts1,Tpts2); 
-
-F =  T'*F*T;
-
-save('q2_2.mat', 'F', 'M', 'pts1', 'pts2');
+%save('q2_2.mat', 'F', 'M', 'pts1', 'pts2');
 end
 

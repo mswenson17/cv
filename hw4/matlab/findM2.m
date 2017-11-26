@@ -37,7 +37,7 @@ end
 p1=pts1*M;
 p2=pts2*M;
 
-save('q3_3.mat','M2','C2','p1' ,'p2','P'); 
+%save('q3_3.mat','M2','C2','p1' ,'p2','P'); 
 
 
 
