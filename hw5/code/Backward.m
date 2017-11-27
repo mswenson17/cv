@@ -28,40 +28,26 @@ end
 
 
 dCda = o - Y;
-z_f = sigmf(act_a{end}, [1 0]);
 
-delta{numel(W)} = dCda.*dsig(z_f);
-grad_b{numel(W)} = delta{numel(W)};
+delta{numel(W)} = dCda.*dsig(act_h{end});
+
+grad_b{numel(W)} = delta{end};
+grad_W{numel(W)} = delta{end}*act_h{end-1}';
+
+%WEND: dCda*sigprime(last layer activations)
+%Wbegin: W(end)*dCda*sigprime*sigprime(hidden layer activations)
 
 %delta{end}
 %delta{2}
 %act_a{end}
-    %minw=min(min(W{1}))
-    %maxw=max(max(W{1}))
-    %minb=min(min(b{1}))
-    %maxb=max(max(b{1}))
-    %minw=min(min(W{2}))
-    %maxw=max(max(W{2}))
-    %minb=min(min(b{2}))
-    %maxb=max(max(b{2}))
-    %celldisp(act_a)
-    %celldisp(act_h)
-
 for i=numel(W)-1:-1:1
-    %W
-    %delta
     delta{i} = (W{i+1}'*delta{i+1}).*dsig(act_h{i});
-    grad_W{i+1} = delta{i+1}*act_h{i}';
-    assert(~isnan(sum(sum(grad_W{i+1}))))
-
-    %ddelt=delta{i}
-    %celldisp(delta)
     if i == 1
+        %X W_2 dCda.*dsig(sigmoid(hidden activations)) * dsig(input activations)
         grad_W{i} = (X*delta{i}')';
-    assert(~isnan(sum(sum(grad_W{i}))))
+    else
+        grad_W{i} = (act_h{i-1}*delta{i}')';
     end
-    assert(sum(delta{i})<1E6)
-
     grad_b{i} = delta{i};
 
 end

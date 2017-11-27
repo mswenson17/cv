@@ -1,8 +1,8 @@
-num_epoch = 40;
+num_epoch = 100;
 classes = 26;
-layers = [32*32, 20,20, classes]
-learning_rate = .01;
-load('../data/nist21_train.mat', 'train_data', 'train_labels')
+layers = [32*32, 400, classes]
+learning_rate = .02
+load('../data/nist26_train.mat', 'train_data', 'train_labels')
 load('../data/nist26_test.mat', 'test_data', 'test_labels')
 load('../data/nist26_valid.mat', 'valid_data', 'valid_labels')
 
@@ -25,7 +25,7 @@ plot(num_epoch, train_acc)
 plot(num_epoch, train_loss)
 plot(num_epoch, valid_acc)
 plot(num_epoch, valid_loss)
-save('nist26_model_300_nodes_05lr.mat', 'W', 'b', 'train_acc', 'train_loss', 'valid_acc','valid_loss')
+save('nist26_model_400_nodes_02lr.mat', 'W', 'b', 'train_acc', 'train_loss', 'valid_acc','valid_loss')
 
 %clear all;
 %num_epoch= 50;
