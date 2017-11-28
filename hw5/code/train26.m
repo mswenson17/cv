@@ -28,7 +28,7 @@ plot(num_epoch, train_acc)
 plot(num_epoch, train_loss)
 plot(num_epoch, valid_acc)
 plot(num_epoch, valid_loss)
-save('nist26_model_400_nodes_02lr_new_weights.mat', 'W', 'b', 'train_acc', 'train_loss', 'valid_acc','valid_loss')
+save('nist26_model_400_nodes_05lr_35weights.mat', 'W', 'b', 'train_acc', 'train_loss', 'valid_acc','valid_loss')
 
 %clear all;
 %num_epoch= 50;
