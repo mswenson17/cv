@@ -1,7 +1,7 @@
 num_epoch = 40;
 classes = 26;
 layers = [32*32, 400, classes]
-learning_rate = .02
+learning_rate = .05
 load('../data/nist26_train.mat', 'train_data', 'train_labels')
 load('../data/nist26_test.mat', 'test_data', 'test_labels')
 load('../data/nist26_valid.mat', 'valid_data', 'valid_labels')
@@ -11,8 +11,9 @@ train_acc=[];
 valid_acc=[];
 
 for j = 1:num_epoch
-    Wpast = W;
+    tic
     [W, b] = Train(W, b, train_data, train_labels, learning_rate);
+    toc
 
     fprintf('\n');
     %checkGradient(W,b,grad_W,grad_b,X);

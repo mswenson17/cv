@@ -17,7 +17,6 @@ D = size(train_labels,1);
 order = randperm(D);
 train_data = train_data(order,:);
 train_labels = train_labels(order,:);
-batch_size = 1;
 
 grad_W= cellfun(@(x) x*0, W, 'un',0);
 grad_b= cellfun(@(x) x*0, b, 'un',0);
@@ -28,32 +27,14 @@ for i = 1:D
     Y = train_labels(i,:)'; 
     [output, act_h, act_a] = Forward(W,b,X);
     [g_W, g_b] = Backward(W, b, X, Y, act_h, act_a);
-
-
-    if i==1
-        [W, b] = UpdateParameters(W, b, g_W, g_b, learning_rate);
-    else
-    grad_W= cellfun(@(x,y) x+y,grad_W, g_W, 'un',0);
-    grad_b= cellfun(@(x,y) x+y,grad_b, g_b, 'un',0);
-    if mod(i, batch_size) == 0
-        grad_W= cellfun(@(x) x/batch_size, grad_W, 'un',0);
-        grad_b= cellfun(@(x) x/batch_size, grad_b, 'un',0);
-
-        [W, b] = UpdateParameters(W, b, grad_W, grad_b, learning_rate);
-
-
-        grad_W= cellfun(@(x) x*0, W, 'un',0);
-        grad_b= cellfun(@(x) x*0, b, 'un',0);
-    end
-
+    [W, b] = UpdateParameters(W, b, g_W, g_b, learning_rate);
     if mod(i,100)==0
         fprintf('\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b')
         fprintf('Done %.2f %%', i/size(train_data,1)*100)
     end
 end
-end
 %assert(1==0)
-fprintf('\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b')
+fprintf('\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b');
 
 
 end

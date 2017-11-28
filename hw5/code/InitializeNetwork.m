@@ -12,8 +12,8 @@ W={};
 b={};
 
 for i = 1:numel(layers)-1
-    W{i} = randn(layers(i+1),layers(i));
-    b{i} = randn(layers(i+1),1);
+    W{i} = 2*(rand(layers(i+1),layers(i))-.5);
+    b{i} = 2*(rand(layers(i+1),1)-.5);
 end
 %b
 %W
