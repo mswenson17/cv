@@ -1,4 +1,4 @@
-num_epoch = 100;
+num_epoch = 40;
 classes = 26;
 layers = [32*32, 400, classes]
 learning_rate = .02
@@ -11,8 +11,10 @@ train_acc=[];
 valid_acc=[];
 
 for j = 1:num_epoch
+    Wpast = W;
     [W, b] = Train(W, b, train_data, train_labels, learning_rate);
 
+    fprintf('\n');
     %checkGradient(W,b,grad_W,grad_b,X);
     [train_acc(j), train_loss(j)] = ComputeAccuracyAndLoss(W, b, train_data, train_labels);
     [valid_acc(j), valid_loss(j)] = ComputeAccuracyAndLoss(W, b, valid_data, valid_labels);
@@ -25,7 +27,7 @@ plot(num_epoch, train_acc)
 plot(num_epoch, train_loss)
 plot(num_epoch, valid_acc)
 plot(num_epoch, valid_loss)
-save('nist26_model_400_nodes_02lr.mat', 'W', 'b', 'train_acc', 'train_loss', 'valid_acc','valid_loss')
+save('nist26_model_400_nodes_02lr_new_weights.mat', 'W', 'b', 'train_acc', 'train_loss', 'valid_acc','valid_loss')
 
 %clear all;
 %num_epoch= 50;
