@@ -23,11 +23,11 @@ grad_b= cellfun(@(x) x*0, b, 'un',0);
 
 for i = 1:D
     X = train_data(i,:)'; 
-
     Y = train_labels(i,:)'; 
     [output, act_h, act_a] = Forward(W,b,X);
     [g_W, g_b] = Backward(W, b, X, Y, act_h, act_a);
     [W, b] = UpdateParameters(W, b, g_W, g_b, learning_rate);
+    avg_err = checkGradient(W,b,g_W,g_b,train_data,train_labels)
     if mod(i,100)==0
         fprintf('\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b')
         fprintf('Done %.2f %%', i/size(train_data,1)*100)

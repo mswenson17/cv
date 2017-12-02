@@ -1,38 +1,44 @@
-[avg_err] = checkGradient(W,b,grad_W,grad_b,data,labels);
-
-[~,N] = size(data);
+function [avg_err] = checkGradient(W,b,grad_W,grad_b,data,labels);
+% Your code here.
 epsilon = .0001;
 
-grad_W
+    %[out_min act_h act_a] = Forward(W,b,X);
+    %[g_W, g_b] = Backward(W, b, X, Y, act_h, act_a);
 
-W_1= cellfun(@(x) x+epsilon, W, 'un',0);
-W_2= cellfun(@(x) x-epsilon, W, 'un',0);
-b_1= cellfun(@(x) x+epsilon, b, 'un',0);
-b_2= cellfun(@(x) x-epsilon, b, 'un',0);
-
-
-outputs =   Forward(W,b,    data');
-outputs_1 = Forward(W_1,b_1,data');
-outputs_2 = Forward(W_2,b_2,data');
-
-
-loss1 = -log(dot(labels,outputs_1));
-loss2 = -log(dot(labels,outputs_2));
-
-num_dC = (loss1-loss2)/(2*epsilon);
-
-%err = num_dC - 
-%num_dW = cellfun(@(x,y) (x-y)/epsilon, W_1,W_2,'un',0);
-%num_dW = cellfun(@(x,y) (x-y)/epsilon, W_1,W_2,'un',0);
-%num_db = cellfun(@(x,y) (x-y)/epsilon, b_1,b_2,'un',0);
-%[acc loss]=ComputeAccuracyAndLoss(W_1,b_1,data(j,:),labels(j,:))
-for i=1:100
-    j = randi(N,1,1);
-    num_err(i) = (loss1-loss2)/(2*epsilon);
+for j = 1:numel(W)
+for i =1:3
+    ind = randi(numel(W{j}),1,1);    
+    W_min  = W; 
+    W_max  = W; 
+    W_min{j}(ind) = W{j}(ind)-epsilon;
+    W_max{j}(ind) = W{j}(ind)+epsilon;
+    [~, train_loss_min] = ComputeAccuracyAndLoss(W_min, b, data, labels);
+    [~, train_loss_max] = ComputeAccuracyAndLoss(W_max, b, data, labels);
+    num_diff =  (train_loss_max-train_loss_min)/(2*epsilon);
+    g_w = grad_W{j};
+    grad_error(j) = abs(num_diff-grad_W{j}(ind));
+end
+avg_err_W = sum(grad_error)/numel(grad_error)
 end
 
-W{end}- 
+for j = 1:numel(b)
+for i =1:3
+    ind = randi(numel(b{1},1,1));    
+    b_min  = b; 
+    b_max  = b; 
+    b_min{j}(ind) = b{j}-epsilon;
+    b_max{j}(ind) = b{j}+epsilon;
+    [~, train_loss_min] = ComputeAccuracyAndLoss(W, b_min, data, labels);
+    [~, train_loss_max] = ComputeAccuracyAndLoss(W, b_max, data, labels);
 
+    num_diff =  (train_loss_max-train_loss_min)/(2*epsilon);
+    grad_error(j) = abs(num_diff-grad_b{j}(ind));
+end
+avg_err_b(i) = sum(grad_error)/numel(grad_error);
+end
 
+avg_err_W
+avg_err_b
 
-% Your code here.
+avg_err = [avg_err_W avg_err_b]
+
